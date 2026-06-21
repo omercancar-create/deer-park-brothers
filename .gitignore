@@ -1,0 +1,7 @@
+# Exclude all brand assets except the two logo PNGs used by the website
+Brand_Assets/**
+!Brand_Assets/DEER PARK BROTHER Branding/
+!Brand_Assets/DEER PARK BROTHER Branding/logo files/
+!Brand_Assets/DEER PARK BROTHER Branding/logo files/Transperent Png/
+!Brand_Assets/DEER PARK BROTHER Branding/logo files/Transperent Png/LOGO-01.png
+!Brand_Assets/DEER PARK BROTHER Branding/logo files/Transperent Png/LOGO-02.png

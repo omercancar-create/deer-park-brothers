@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community - Deerpark Brothers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --navy-deepest: #060F18;
+      --navy-dark: #0B1E2D;
+      --navy-mid: #0F2D44;
+      --navy-brand: #1A4E72;
+      --gold: #C8A84A;
+      --gold-light: #DFC069;
+      --gold-08: rgba(200,168,74,0.08);
+      --gold-15: rgba(200,168,74,0.15);
+      --gold-25: rgba(200,168,74,0.25);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--navy-deepest); color: #fff; overflow-x: hidden; }
+    body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; background-size: 200px 200px; }
+
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--gold); color: var(--navy-deepest); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 36px; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s ease, transform 0.15s ease; box-shadow: 0 8px 24px rgba(200,168,74,0.22); }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    /* nav */
+    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 22px 56px; transition: padding 0.35s ease, background 0.35s ease, border-color 0.35s ease; border-bottom: 1px solid transparent; }
+    #nav.scrolled { padding: 14px 56px; background: rgba(6,15,24,0.9); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); border-color: rgba(200,168,74,0.12); }
+    .nav-logo { height: 50px; width: auto; transition: height 0.3s ease; }
+    #nav.scrolled .nav-logo { height: 40px; }
+    .nav-links { display: flex; align-items: center; gap: 36px; }
+    .nav-links a { color: rgba(255,255,255,0.72); text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; position: relative; transition: color 0.2s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-links a.active::after, .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta { background: var(--gold) !important; color: var(--navy-deepest) !important; padding: 10px 22px !important; font-weight: 700 !important; }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+
+    .eyebrow { display: flex; align-items: center; gap: 12px; }
+    .eyebrow::before { content: ''; display: block; width: 36px; height: 2px; background: var(--gold); flex-shrink: 0; }
+    .eyebrow span { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+    .gold { color: var(--gold); }
+    .body-text { font-size: 15px; font-weight: 400; line-height: 1.78; color: rgba(255,255,255,0.58); }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up-d1 { transition-delay: 0.08s; }
+    .fade-up-d2 { transition-delay: 0.16s; }
+    .fade-up-d3 { transition-delay: 0.24s; }
+    .fade-up-d4 { transition-delay: 0.32s; }
+
+    /* page hero */
+    .page-hero { min-height: 60vh; display: flex; align-items: flex-end; position: relative; overflow: hidden; padding: 80px 56px; }
+    .page-hero-bg { position: absolute; inset: 0; }
+    .page-hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); opacity: 0.28; }
+    .page-hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--navy-deepest) 0%, rgba(6,15,24,0.7) 50%, rgba(6,15,24,0.4) 100%), linear-gradient(to right, var(--navy-deepest) 0%, transparent 60%); }
+    .page-hero-content { position: relative; z-index: 1; }
+    .page-hero-title { font-size: clamp(48px, 6vw, 88px); font-weight: 900; line-height: 0.92; letter-spacing: -0.035em; text-transform: uppercase; margin-top: 20px; }
+    .page-hero-sub { font-size: 13px; font-weight: 500; line-height: 1.6; color: rgba(255,255,255,0.55); max-width: 480px; margin-top: 20px; }
+    .hero-rule { position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold-25), transparent); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* stats strip */
+    .stats-strip { background: var(--navy-dark); border-top: 1px solid var(--gold-15); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .stats-inner { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .stat-block { padding: 52px 40px; position: relative; text-align: center; }
+    .stat-block + .stat-block { border-left: 1px solid rgba(255,255,255,0.05); }
+    .stat-num { font-size: clamp(40px, 4vw, 64px); font-weight: 900; color: var(--gold); letter-spacing: -0.04em; line-height: 1; }
+    .stat-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 10px; }
+
+    /* gallery section */
+    .gallery-section { padding: 100px 56px; }
+    .gallery-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; }
+    .gallery-title { font-size: clamp(32px, 3.5vw, 52px); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: auto; gap: 10px; }
+    .gallery-item { overflow: hidden; position: relative; background: var(--navy-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(0.2) saturate(0.8); transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), filter 0.55s; }
+    .gallery-item:hover img { transform: scale(1.05); filter: grayscale(0) saturate(1); }
+    .gallery-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,15,24,0.55) 0%, transparent 60%); pointer-events: none; }
+
+    .gi-1 { grid-column: 1 / 6; grid-row: 1; height: 380px; }
+    .gi-2 { grid-column: 6 / 9; grid-row: 1; height: 380px; }
+    .gi-3 { grid-column: 9 / 13; grid-row: 1; height: 380px; }
+    .gi-4 { grid-column: 1 / 4; grid-row: 2; height: 280px; }
+    .gi-5 { grid-column: 4 / 8; grid-row: 2; height: 280px; }
+    .gi-6 { grid-column: 8 / 13; grid-row: 2; height: 280px; }
+
+    /* community values */
+    .values { padding: 100px 56px; background: var(--navy-dark); position: relative; overflow: hidden; }
+    .values::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(200,168,74,0.05) 0%, transparent 65%); pointer-events: none; }
+    .values-header { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 72px; }
+    .values-title { font-size: clamp(36px, 4vw, 60px); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; }
+    .values-intro { font-size: 15px; line-height: 1.78; color: rgba(255,255,255,0.5); }
+    .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .value-card { background: var(--navy-mid); padding: 44px 36px; transition: background 0.3s; }
+    .value-card:hover { background: rgba(15,45,68,0.9); }
+    .value-icon { width: 44px; height: 44px; border: 1px solid var(--gold-25); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; color: var(--gold); }
+    .value-name { font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 14px; }
+    .value-desc { font-size: 13px; line-height: 1.72; color: rgba(255,255,255,0.45); }
+
+    /* events */
+    .events { padding: 100px 56px; }
+    .events-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 52px; }
+    .events-title { font-size: clamp(32px, 3.5vw, 52px); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; }
+    .event-list { display: flex; flex-direction: column; gap: 0; }
+    .event-item { display: grid; grid-template-columns: 100px 1fr auto; align-items: center; gap: 40px; padding: 32px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; cursor: default; }
+    .event-item:first-child { border-top: 1px solid rgba(255,255,255,0.05); }
+    .event-item:hover { background: rgba(255,255,255,0.01); }
+    .event-date { text-align: center; }
+    .event-day { font-size: 44px; font-weight: 900; color: var(--gold); line-height: 1; letter-spacing: -0.04em; }
+    .event-month { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 4px; }
+    .event-details {}
+    .event-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .event-name { font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.15; }
+    .event-meta { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 8px; display: flex; gap: 20px; }
+    .event-action { flex-shrink: 0; }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.45); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; border: 1px solid rgba(255,255,255,0.12); padding: 12px 22px; transition: color 0.2s, border-color 0.2s; }
+    .btn-ghost:hover { color: var(--gold); border-color: var(--gold-25); }
+
+    /* testimonials */
+    .testimonials { background: var(--navy-brand); padding: 100px 56px; position: relative; overflow: hidden; }
+    .testimonials::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 70% at 50% 50%, rgba(200,168,74,0.06) 0%, transparent 60%); pointer-events: none; }
+    .testimonials::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold-25), transparent); }
+    .test-header { text-align: center; margin-bottom: 64px; }
+    .test-title { font-size: clamp(32px, 3.5vw, 52px); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; margin-top: 20px; }
+    .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .test-card { background: rgba(6,15,24,0.45); padding: 44px 40px; position: relative; }
+    .test-quote { font-size: 14px; line-height: 1.82; color: rgba(255,255,255,0.62); margin-bottom: 32px; font-style: italic; }
+    .test-quote::before { content: '\201C'; font-size: 60px; color: var(--gold); opacity: 0.25; line-height: 1; display: block; margin-bottom: -20px; font-style: normal; }
+    .test-author { display: flex; align-items: center; gap: 14px; }
+    .test-avatar { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid var(--gold-25); flex-shrink: 0; }
+    .test-avatar img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.3); }
+    .test-name { font-size: 13px; font-weight: 700; }
+    .test-role { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 3px; }
+
+    /* join cta */
+    .join { background: var(--navy-deepest); padding: 100px 56px; text-align: center; position: relative; overflow: hidden; }
+    .join::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(200,168,74,0.05) 0%, transparent 65%); }
+    .join::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold-25), transparent); }
+    .join-inner { position: relative; z-index: 1; }
+    .join-title { font-size: clamp(36px, 4.5vw, 60px); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; max-width: 700px; margin: 0 auto 20px; }
+    .join-body { font-size: 15px; line-height: 1.78; color: rgba(255,255,255,0.58); max-width: 460px; margin: 0 auto 40px; }
+    .join-form { display: flex; max-width: 480px; margin: 0 auto; }
+    .join-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 13px; padding: 15px 20px; outline: none; transition: border-color 0.2s; }
+    .join-input::placeholder { color: rgba(255,255,255,0.28); }
+    .join-input:focus { border-color: var(--gold-25); }
+    .join-submit { background: var(--gold); color: var(--navy-deepest); font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 15px 28px; border: none; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .join-submit:hover { background: var(--gold-light); }
+
+    /* footer */
+    footer { background: #040C14; padding: 72px 56px 36px; border-top: 1px solid var(--gold-15); }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 64px; }
+    .footer-logo-img { height: 52px; width: auto; margin-bottom: 20px; }
+    .footer-about { font-size: 13px; line-height: 1.72; color: rgba(255,255,255,0.35); max-width: 240px; }
+    .footer-heading { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .footer-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-list a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .footer-list a:hover { color: rgba(255,255,255,0.85); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .footer-copy { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
+    .socials { display: flex; gap: 10px; }
+    .social-btn { width: 38px; height: 38px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.38); text-decoration: none; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+    .social-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-08); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html">
+      <img src="Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-02.png" alt="Deerpark Brothers" class="nav-logo" onerror="this.src='Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-01.png'">
+    </a>
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="programs.html">Programs</a>
+      <a href="community.html" class="active">Community</a>
+      <a href="join.html" class="nav-cta">Join Us</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="https://picsum.photos/seed/dpb-comm-hero/1440/700?grayscale" alt="" aria-hidden="true">
+    </div>
+    <div class="page-hero-content">
+      <div class="eyebrow" style="opacity:0;animation:fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards">
+        <span>Deer Park, Melbourne</span>
+      </div>
+      <h1 class="page-hero-title" style="opacity:0;animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s forwards">
+        Our<br>Community.
+      </h1>
+      <p class="page-hero-sub" style="opacity:0;animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s forwards">
+        We are brothers &#8212; united by faith, shaped by this neighbourhood, and committed to each other. This is what that looks like.
+      </p>
+    </div>
+    <div class="hero-rule"></div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stats-inner">
+      <div class="stat-block fade-up">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Active Brothers</div>
+      </div>
+      <div class="stat-block fade-up fade-up-d1">
+        <div class="stat-num">6</div>
+        <div class="stat-label">Weekly Programs</div>
+      </div>
+      <div class="stat-block fade-up fade-up-d2">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Years Running</div>
+      </div>
+      <div class="stat-block fade-up fade-up-d3">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Community</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-header">
+      <h2 class="gallery-title fade-up">Life in the<br><span class="gold">Brotherhood.</span></h2>
+      <span class="fade-up fade-up-d1" style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3)">Community Gallery</span>
+    </div>
+    <div class="gallery-grid fade-up fade-up-d1">
+      <div class="gallery-item gi-1">
+        <img src="https://picsum.photos/seed/dpb-g1/900/500" alt="Community gathering" loading="lazy">
+      </div>
+      <div class="gallery-item gi-2">
+        <img src="https://picsum.photos/seed/dpb-g2/500/500" alt="Brothers at halaqa" loading="lazy">
+      </div>
+      <div class="gallery-item gi-3">
+        <img src="https://picsum.photos/seed/dpb-g3/600/500" alt="Sports day" loading="lazy">
+      </div>
+      <div class="gallery-item gi-4">
+        <img src="https://picsum.photos/seed/dpb-g4/500/400" alt="Youth program" loading="lazy">
+      </div>
+      <div class="gallery-item gi-5">
+        <img src="https://picsum.photos/seed/dpb-g5/700/400" alt="Iftar evening" loading="lazy">
+      </div>
+      <div class="gallery-item gi-6">
+        <img src="https://picsum.photos/seed/dpb-g6/700/400" alt="Community service" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="values">
+    <div class="values-header">
+      <div>
+        <div class="eyebrow fade-up" style="margin-bottom:20px"><span>What We Stand For</span></div>
+        <h2 class="values-title fade-up fade-up-d1">Built on Four<br><span class="gold">Pillars.</span></h2>
+      </div>
+      <p class="values-intro fade-up fade-up-d2">Everything we do &#8212; every program, every event, every conversation &#8212; comes back to these four values. They are not ideals we aspire to. They are what we already are.</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card fade-up">
+        <div class="value-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="value-name">Faith</div>
+        <p class="value-desc">Grounded in Islam. Our deen is not a background detail &#8212; it is the foundation everything else is built upon. We learn it, live it, and remind each other of it.</p>
+      </div>
+      <div class="value-card fade-up fade-up-d1">
+        <div class="value-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="value-name">Brotherhood</div>
+        <p class="value-desc">The bond between brothers is sacred. We show up for each other in the good times and the hard ones. No brother faces his challenges alone.</p>
+      </div>
+      <div class="value-card fade-up fade-up-d2">
+        <div class="value-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        </div>
+        <div class="value-name">Unity</div>
+        <p class="value-desc">Across backgrounds, ages, and walks of life &#8212; we are one community. Our diversity is not a challenge to manage but a strength to celebrate.</p>
+      </div>
+      <div class="value-card fade-up fade-up-d3">
+        <div class="value-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="value-name">Growth</div>
+        <p class="value-desc">Stagnation is not an option. Every brother is on a journey of becoming. We create the space and hold each other accountable to keep moving forward.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="events">
+    <div class="events-header">
+      <div>
+        <div class="eyebrow fade-up" style="margin-bottom:20px"><span>Calendar</span></div>
+        <h2 class="events-title fade-up fade-up-d1">Upcoming<br><span class="gold">Events.</span></h2>
+      </div>
+      <a href="programs.html" class="btn-ghost fade-up fade-up-d2">
+        All Programs
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="event-list">
+      <div class="event-item fade-up">
+        <div class="event-date">
+          <div class="event-day">06</div>
+          <div class="event-month">Jun 2025</div>
+        </div>
+        <div class="event-details">
+          <div class="event-tag">Weekly Program</div>
+          <div class="event-name">Friday Night Halaqa</div>
+          <div class="event-meta">
+            <span>After Isha &mdash; ~9:00 PM</span>
+            <span>Deer Park Masjid</span>
+          </div>
+        </div>
+        <div class="event-action"><a href="programs.html" class="btn-ghost">Details</a></div>
+      </div>
+      <div class="event-item fade-up fade-up-d1">
+        <div class="event-date">
+          <div class="event-day">08</div>
+          <div class="event-month">Jun 2025</div>
+        </div>
+        <div class="event-details">
+          <div class="event-tag">Sports</div>
+          <div class="event-name">Saturday Morning Footy &amp; Fitness</div>
+          <div class="event-meta">
+            <span>8:00 AM</span>
+            <span>Deer Park Oval</span>
+          </div>
+        </div>
+        <div class="event-action"><a href="programs.html" class="btn-ghost">Details</a></div>
+      </div>
+      <div class="event-item fade-up fade-up-d2">
+        <div class="event-date">
+          <div class="event-day">14</div>
+          <div class="event-month">Jun 2025</div>
+        </div>
+        <div class="event-details">
+          <div class="event-tag">Community Iftar</div>
+          <div class="event-name">Monthly Brothers&rsquo; Iftar</div>
+          <div class="event-meta">
+            <span>Saturday Evening</span>
+            <span>Community Hall, Deer Park</span>
+          </div>
+        </div>
+        <div class="event-action"><a href="programs.html" class="btn-ghost">Details</a></div>
+      </div>
+      <div class="event-item fade-up fade-up-d3">
+        <div class="event-date">
+          <div class="event-day">22</div>
+          <div class="event-month">Jun 2025</div>
+        </div>
+        <div class="event-details">
+          <div class="event-tag">Youth</div>
+          <div class="event-name">Youth Sunday Session</div>
+          <div class="event-meta">
+            <span>Sunday 2:00 PM&ndash;5:00 PM</span>
+            <span>Deer Park Community Centre</span>
+          </div>
+        </div>
+        <div class="event-action"><a href="programs.html" class="btn-ghost">Details</a></div>
+      </div>
+      <div class="event-item fade-up">
+        <div class="event-date">
+          <div class="event-day">28</div>
+          <div class="event-month">Jun 2025</div>
+        </div>
+        <div class="event-details">
+          <div class="event-tag">Community Service</div>
+          <div class="event-name">Neighbourhood Food Drive</div>
+          <div class="event-meta">
+            <span>Saturday Morning</span>
+            <span>Deer Park &amp; surrounds</span>
+          </div>
+        </div>
+        <div class="event-action"><a href="programs.html" class="btn-ghost">Details</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="test-header">
+      <div class="eyebrow fade-up" style="justify-content:center;margin-bottom:16px"><span>From the Brothers</span></div>
+      <h2 class="test-title fade-up fade-up-d1">In Their<br><span class="gold">Words.</span></h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card fade-up">
+        <p class="test-quote">DPB gave me something I didn&rsquo;t know I was looking for. Brothers who hold you accountable, keep you grounded, and show up. That&rsquo;s rare.</p>
+        <div class="test-author">
+          <div class="test-avatar"><img src="https://picsum.photos/seed/dpb-t1/100/100" alt=""></div>
+          <div>
+            <div class="test-name">Ahmed K.</div>
+            <div class="test-role">Member since 2022</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card fade-up fade-up-d1">
+        <p class="test-quote">The halaqa every Friday became the most important hour of my week. I learn something every single time &#8212; about deen, about life, about myself.</p>
+        <div class="test-author">
+          <div class="test-avatar"><img src="https://picsum.photos/seed/dpb-t2/100/100" alt=""></div>
+          <div>
+            <div class="test-name">Omar R.</div>
+            <div class="test-role">Member since 2021</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card fade-up fade-up-d2">
+        <p class="test-quote">I joined for the footy on Saturdays and stayed for everything else. It&rsquo;s not just sport &#8212; it&rsquo;s genuine brotherhood. These are my people now.</p>
+        <div class="test-author">
+          <div class="test-avatar"><img src="https://picsum.photos/seed/dpb-t3/100/100" alt=""></div>
+          <div>
+            <div class="test-name">Yusuf M.</div>
+            <div class="test-role">Member since 2023</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN CTA -->
+  <section class="join" id="join">
+    <div class="join-inner">
+      <div class="eyebrow fade-up" style="justify-content:center;margin-bottom:20px"><span>Get Involved</span></div>
+      <h2 class="join-title fade-up fade-up-d1">Become Part of<br><span class="gold">the Brotherhood.</span></h2>
+      <p class="join-body fade-up fade-up-d2">All programs are free and open to Muslim brothers of all ages and backgrounds. Leave your email and we&rsquo;ll be in touch.</p>
+      <form class="join-form fade-up fade-up-d3" onsubmit="return false">
+        <input type="email" class="join-input" placeholder="Your email address" required>
+        <button type="submit" class="join-submit">Sign Up</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <img src="Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-02.png" alt="Deerpark Brothers" class="footer-logo-img" onerror="this.src='Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-01.png'">
+        <p class="footer-about">A Muslim community organisation rooted in the heart of Deer Park, Melbourne.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-list">
+          <li><a href="about.html">About</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="join.html">Join Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Programs</div>
+        <ul class="footer-list">
+          <li><a href="programs.html">Weekly Halaqa</a></li>
+          <li><a href="programs.html">Community Iftars</a></li>
+          <li><a href="programs.html">Youth Programs</a></li>
+          <li><a href="programs.html">Sports &amp; Fitness</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Connect</div>
+        <ul class="footer-list">
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Deerpark Brothers. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" class="social-btn" aria-label="Facebook"><svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Instagram"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.75" fill="currentColor"/></svg></a>
+        <a href="#" class="social-btn" aria-label="YouTube"><svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50), { passive: true });
+    const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

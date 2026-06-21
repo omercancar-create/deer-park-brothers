@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Us - Deerpark Brothers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --navy-deepest: #060F18;
+      --navy-dark: #0B1E2D;
+      --navy-mid: #0F2D44;
+      --navy-brand: #1A4E72;
+      --gold: #C8A84A;
+      --gold-light: #DFC069;
+      --gold-08: rgba(200,168,74,0.08);
+      --gold-15: rgba(200,168,74,0.15);
+      --gold-25: rgba(200,168,74,0.25);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--navy-deepest); color: #fff; overflow-x: hidden; }
+    body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"); background-repeat: repeat; background-size: 200px 200px; }
+
+    /* nav */
+    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 22px 56px; transition: padding 0.35s ease, background 0.35s ease, border-color 0.35s ease; border-bottom: 1px solid transparent; }
+    #nav.scrolled { padding: 14px 56px; background: rgba(6,15,24,0.9); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); border-color: rgba(200,168,74,0.12); }
+    .nav-logo { height: 50px; width: auto; transition: height 0.3s ease; }
+    #nav.scrolled .nav-logo { height: 40px; }
+    .nav-links { display: flex; align-items: center; gap: 36px; }
+    .nav-links a { color: rgba(255,255,255,0.72); text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; position: relative; transition: color 0.2s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-links a.active::after, .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta { background: var(--gold) !important; color: var(--navy-deepest) !important; padding: 10px 22px !important; font-weight: 700 !important; }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+
+    .eyebrow { display: flex; align-items: center; gap: 12px; }
+    .eyebrow::before { content: ''; display: block; width: 36px; height: 2px; background: var(--gold); flex-shrink: 0; }
+    .eyebrow span { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+    .gold { color: var(--gold); }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up-d1 { transition-delay: 0.08s; }
+    .fade-up-d2 { transition-delay: 0.16s; }
+    .fade-up-d3 { transition-delay: 0.24s; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* layout */
+    .page-wrap { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+
+    /* left panel */
+    .join-left { background: var(--navy-brand); padding: 160px 72px 80px 56px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+    .join-left::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 30% 60%, rgba(200,168,74,0.08) 0%, transparent 60%); pointer-events: none; }
+    .join-left::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, var(--gold-15), transparent); }
+    .join-left-bg { position: absolute; inset: 0; }
+    .join-left-bg img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); opacity: 0.1; }
+    .join-left-content { position: relative; z-index: 1; }
+    .join-title { font-size: clamp(44px, 5vw, 72px); font-weight: 900; line-height: 0.93; letter-spacing: -0.035em; text-transform: uppercase; margin: 20px 0 28px; }
+    .join-desc { font-size: 14px; line-height: 1.78; color: rgba(255,255,255,0.55); max-width: 380px; margin-bottom: 52px; }
+
+    .why-list { display: flex; flex-direction: column; gap: 20px; }
+    .why-item { display: flex; align-items: flex-start; gap: 16px; }
+    .why-num { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--gold); margin-top: 3px; flex-shrink: 0; }
+    .why-text { font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.5); }
+    .why-text strong { color: rgba(255,255,255,0.85); font-weight: 700; display: block; margin-bottom: 2px; font-size: 13px; }
+
+    .join-motif { position: absolute; bottom: -40px; right: -20px; font-size: 180px; font-weight: 900; color: rgba(255,255,255,0.025); line-height: 1; letter-spacing: -0.05em; user-select: none; pointer-events: none; }
+
+    /* right panel — form */
+    .join-right { background: var(--navy-dark); padding: 140px 72px 80px 72px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+    .form-heading { font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .form-sub { font-size: 13px; color: rgba(255,255,255,0.38); margin-bottom: 44px; line-height: 1.6; }
+
+    /* form elements */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .form-group.no-mb { margin-bottom: 0; }
+    .form-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+    .form-label span { color: var(--gold); }
+    .form-input, .form-select, .form-textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 14px 18px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      width: 100%;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold-25); background: rgba(255,255,255,0.06); }
+    .form-select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 44px; }
+    .form-select option { background: var(--navy-dark); color: #fff; }
+    .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+    /* checkboxes */
+    .form-checks-label { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+    .checks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .check-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .check-item input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); flex-shrink: 0; cursor: pointer; position: relative; transition: border-color 0.2s, background 0.2s; }
+    .check-item input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
+    .check-item input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 5px; top: 2px; width: 6px; height: 10px; border: 2px solid var(--navy-deepest); border-top: none; border-left: none; transform: rotate(45deg); }
+    .check-item label { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55); cursor: pointer; line-height: 1.4; }
+    .check-item:hover label { color: rgba(255,255,255,0.85); }
+    .check-item:hover input[type="checkbox"] { border-color: var(--gold-25); }
+
+    /* divider */
+    .form-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 24px 0; }
+
+    /* submit */
+    .form-submit { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; background: var(--gold); color: var(--navy-deepest); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 18px; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 24px rgba(200,168,74,0.25); margin-top: 8px; }
+    .form-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .form-submit:active { transform: none; }
+    .form-note { font-size: 10px; color: rgba(255,255,255,0.2); text-align: center; margin-top: 14px; line-height: 1.6; }
+
+    /* success state */
+    .success-state { display: none; text-align: center; padding: 40px 0; }
+    .success-state.show { display: block; }
+    .success-icon { width: 64px; height: 64px; border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; color: var(--gold); }
+    .success-title { font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .success-body { font-size: 14px; line-height: 1.72; color: rgba(255,255,255,0.5); max-width: 360px; margin: 0 auto 32px; }
+    .form-wrap { transition: opacity 0.4s, transform 0.4s; }
+    .form-wrap.hidden { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+
+    /* footer */
+    footer { background: #040C14; padding: 72px 56px 36px; border-top: 1px solid var(--gold-15); }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 64px; }
+    .footer-logo-img { height: 52px; width: auto; margin-bottom: 20px; }
+    .footer-about { font-size: 13px; line-height: 1.72; color: rgba(255,255,255,0.35); max-width: 240px; }
+    .footer-heading { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .footer-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-list a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+    .footer-list a:hover { color: rgba(255,255,255,0.85); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .footer-copy { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; }
+    .socials { display: flex; gap: 10px; }
+    .social-btn { width: 38px; height: 38px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.38); text-decoration: none; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+    .social-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-08); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="index.html">
+      <img src="Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-02.png" alt="Deerpark Brothers" class="nav-logo" onerror="this.src='Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-01.png'">
+    </a>
+    <div class="nav-links">
+      <a href="about.html">About</a>
+      <a href="programs.html">Programs</a>
+      <a href="community.html">Community</a>
+      <a href="join.html" class="nav-cta active">Join Us</a>
+    </div>
+  </nav>
+
+  <!-- MAIN LAYOUT -->
+  <div class="page-wrap">
+
+    <!-- LEFT PANEL -->
+    <div class="join-left">
+      <div class="join-left-bg">
+        <img src="https://picsum.photos/seed/dpb-join/800/1100?grayscale" alt="" aria-hidden="true">
+      </div>
+      <div class="join-left-content">
+        <div class="eyebrow" style="opacity:0;animation:fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards">
+          <span>Become a Member</span>
+        </div>
+        <h1 class="join-title" style="opacity:0;animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s forwards">
+          Join the<br><span class="gold">Brotherhood.</span>
+        </h1>
+        <p class="join-desc" style="opacity:0;animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s forwards">
+          Fill in the form and one of our brothers will be in touch. All programs are free and open to Muslim brothers of all ages.
+        </p>
+        <div class="why-list" style="opacity:0;animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.62s forwards">
+          <div class="why-item">
+            <span class="why-num">01</span>
+            <div class="why-text"><strong>Free to Join</strong>All programs are completely free. No membership fees, no subscriptions.</div>
+          </div>
+          <div class="why-item">
+            <span class="why-num">02</span>
+            <div class="why-text"><strong>All Ages Welcome</strong>Brothers of every age &#8212; from youth to elders &#8212; are part of this community.</div>
+          </div>
+          <div class="why-item">
+            <span class="why-num">03</span>
+            <div class="why-text"><strong>Start Whenever</strong>No formal joining process. Show up, and you&rsquo;re one of us.</div>
+          </div>
+        </div>
+      </div>
+      <div class="join-motif">DB</div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="join-right">
+
+      <!-- Form -->
+      <div class="form-wrap" id="form-wrap">
+        <div class="form-heading fade-up">Tell Us About<br><span class="gold">Yourself.</span></div>
+        <p class="form-sub fade-up fade-up-d1">We&rsquo;ll use this to match you with the right programs and have a brother reach out to you.</p>
+
+        <form id="join-form" novalidate>
+
+          <div class="form-row fade-up fade-up-d1">
+            <div class="form-group no-mb">
+              <label class="form-label" for="first-name">First Name <span>*</span></label>
+              <input type="text" id="first-name" class="form-input" placeholder="Ahmad" required>
+            </div>
+            <div class="form-group no-mb">
+              <label class="form-label" for="last-name">Last Name <span>*</span></label>
+              <input type="text" id="last-name" class="form-input" placeholder="Al-Rahman" required>
+            </div>
+          </div>
+
+          <div class="form-row fade-up fade-up-d1">
+            <div class="form-group no-mb">
+              <label class="form-label" for="email">Email <span>*</span></label>
+              <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group no-mb">
+              <label class="form-label" for="phone">Phone <span style="color:rgba(255,255,255,0.25)">Optional</span></label>
+              <input type="tel" id="phone" class="form-input" placeholder="04XX XXX XXX">
+            </div>
+          </div>
+
+          <div class="form-row fade-up fade-up-d2">
+            <div class="form-group no-mb">
+              <label class="form-label" for="age-group">Age Group <span>*</span></label>
+              <select id="age-group" class="form-select" required>
+                <option value="" disabled selected>Select your age group</option>
+                <option value="under-18">Under 18</option>
+                <option value="18-25">18 &ndash; 25</option>
+                <option value="26-35">26 &ndash; 35</option>
+                <option value="36-plus">36 and over</option>
+              </select>
+            </div>
+            <div class="form-group no-mb">
+              <label class="form-label" for="heard">How Did You Hear About Us?</label>
+              <select id="heard" class="form-select">
+                <option value="" disabled selected>Select an option</option>
+                <option value="friend">From a friend</option>
+                <option value="social">Social media</option>
+                <option value="masjid">At the masjid</option>
+                <option value="event">At an event</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-divider fade-up fade-up-d2"></div>
+
+          <div class="fade-up fade-up-d2">
+            <div class="form-checks-label">Programs I&rsquo;m Interested In</div>
+            <div class="checks-grid">
+              <label class="check-item">
+                <input type="checkbox" name="programs" value="halaqa" checked>
+                <label>Weekly Halaqa</label>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="programs" value="iftars">
+                <label>Community Iftars</label>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="programs" value="youth">
+                <label>Youth Programs</label>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="programs" value="mentorship">
+                <label>Mentorship</label>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="programs" value="sports">
+                <label>Sports &amp; Fitness</label>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="programs" value="service">
+                <label>Community Service</label>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group fade-up fade-up-d3">
+            <label class="form-label" for="message">Anything else you&rsquo;d like us to know?</label>
+            <textarea id="message" class="form-textarea" placeholder="A quick intro, questions, or anything on your mind..."></textarea>
+          </div>
+
+          <button type="submit" class="form-submit fade-up fade-up-d3">
+            Submit &amp; Join Us
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <p class="form-note fade-up">Your information is kept private and never shared with third parties.<br>We will be in touch within 2&ndash;3 days. JazakAllahu Khairan.</p>
+
+        </form>
+      </div>
+
+      <!-- Success state -->
+      <div class="success-state" id="success-state">
+        <div class="success-icon">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 class="success-title">JazakAllahu<br><span class="gold">Khairan!</span></h2>
+        <p class="success-body">Your application has been received. A brother from our team will be in touch with you within 2&ndash;3 days, insha&rsquo;Allah.</p>
+        <a href="index.html" style="display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--navy-deepest);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:16px 36px;text-decoration:none;box-shadow:0 8px 24px rgba(200,168,74,0.22)">
+          Back to Home
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <img src="Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-02.png" alt="Deerpark Brothers" class="footer-logo-img" onerror="this.src='Brand_Assets/DEER%20PARK%20BROTHER%20Branding/logo%20files/Transperent%20Png/LOGO-01.png'">
+        <p class="footer-about">A Muslim community organisation rooted in the heart of Deer Park, Melbourne.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-list">
+          <li><a href="about.html">About</a></li>
+          <li><a href="programs.html">Programs</a></li>
+          <li><a href="community.html">Community</a></li>
+          <li><a href="join.html">Join Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Programs</div>
+        <ul class="footer-list">
+          <li><a href="programs.html">Weekly Halaqa</a></li>
+          <li><a href="programs.html">Community Iftars</a></li>
+          <li><a href="programs.html">Youth Programs</a></li>
+          <li><a href="programs.html">Sports &amp; Fitness</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Connect</div>
+        <ul class="footer-list">
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2025 Deerpark Brothers. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" class="social-btn" aria-label="Facebook"><svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" class="social-btn" aria-label="Instagram"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.75" fill="currentColor"/></svg></a>
+        <a href="#" class="social-btn" aria-label="YouTube"><svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50), { passive: true });
+    const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    document.getElementById('join-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName = document.getElementById('last-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const ageGroup = document.getElementById('age-group').value;
+
+      if (!firstName || !lastName) { highlightError('first-name'); highlightError('last-name'); return; }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { highlightError('email'); return; }
+      if (!ageGroup) { highlightError('age-group'); return; }
+
+      const formWrap = document.getElementById('form-wrap');
+      formWrap.classList.add('hidden');
+      setTimeout(() => {
+        formWrap.style.display = 'none';
+        document.getElementById('success-state').classList.add('show');
+      }, 400);
+    });
+
+    function highlightError(id) {
+      const el = document.getElementById(id);
+      el.style.borderColor = '#e05a5a';
+      el.focus();
+      setTimeout(() => { el.style.borderColor = ''; }, 2500);
+    }
+  </script>
+</body>
+</html>

@@ -331,6 +331,57 @@
     .fade-up-d4 { transition-delay: 0.32s; }
 
     .gold { color: var(--gold); }
+
+    /* ── MOBILE MENU ─────────────────────── */
+    .burger{display:none;flex-direction:column;gap:5px;width:44px;height:44px;align-items:center;justify-content:center;background:none;border:none;cursor:pointer}
+    .burger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+    #mmenu{display:none;position:fixed;inset:0;background:var(--navy-deepest);z-index:1100;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+    #mmenu.open{display:flex}
+    #mmenu a{font-family:'Montserrat',sans-serif;font-size:2.2rem;font-weight:900;text-transform:uppercase;color:rgba(255,255,255,.8);text-decoration:none;letter-spacing:-.02em;transition:color .2s}
+    #mmenu a:hover{color:var(--gold)}
+    .mm-close{position:absolute;top:24px;right:24px;background:none;border:none;color:rgba(255,255,255,.5);font-size:1.4rem;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+
+    /* ── RESPONSIVE ───────────────────────── */
+    @media(max-width:768px){
+      .nav-links{display:none}.burger{display:flex}
+      #nav{padding:16px 20px}#nav.scrolled{padding:12px 20px}
+      #hero{padding:110px 20px 60px}
+      .hero-photo{display:none}
+      .hero-actions{flex-direction:column;align-items:flex-start;gap:16px}
+      .scroll-cue{display:none}
+      #pillars{grid-template-columns:1fr 1fr}
+      .pillar{padding:28px 20px}.pillar-name{font-size:17px}
+      #about{grid-template-columns:1fr}
+      .about-left{padding:64px 24px;min-height:260px}.about-right{padding:64px 24px}
+      .about-stats{grid-template-columns:repeat(3,1fr);margin-top:28px;padding-top:28px}
+      .stat-val{font-size:28px}
+      #programs{padding:60px 20px}
+      .programs-header{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:36px}
+      .programs-grid{grid-template-columns:1fr}
+      .prog-card{padding:32px 24px}
+      #community{padding:72px 24px}
+      #donate{padding:72px 20px}
+      .donate-inner{grid-template-columns:1fr;gap:48px}
+      .donate-right{padding:32px 24px}
+      .donate-amounts{grid-template-columns:1fr 1fr}
+      #join{padding:72px 24px}
+      footer{padding:48px 20px 28px}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:28px;margin-bottom:40px}
+      .footer-bottom{flex-direction:column;gap:14px;text-align:center}
+    }
+    @media(max-width:480px){
+      #pillars{grid-template-columns:1fr}
+      .about-stats{grid-template-columns:1fr;gap:0;border-top:none}
+      .about-stat{border-right:none!important;padding:0 0 16px!important;border-bottom:1px solid rgba(255,255,255,.07)}
+      .about-stat:last-child{border-bottom:none;padding:16px 0 0!important}
+      .about-stat:nth-child(2){padding:16px 0!important;border-bottom:1px solid rgba(255,255,255,.07)}
+      .footer-grid{grid-template-columns:1fr}
+      .btn-primary{width:100%;justify-content:center}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .fade-up{opacity:1;transform:none}
+      *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+    }
   </style>
 </head>
 <body>
@@ -351,7 +402,15 @@
       <a href="community.html">Community</a>
       <a href="join.html" class="nav-cta">Join Us</a>
     </div>
+    <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
+  <div id="mmenu">
+    <button class="mm-close" id="mmClose">✕</button>
+    <a href="about.html">About</a>
+    <a href="programs.html">Programs</a>
+    <a href="community.html">Community</a>
+    <a href="join.html" style="color:var(--gold)">Join Us</a>
+  </div>
 
   <!-- HERO -->
   <section id="hero">
@@ -689,6 +748,14 @@
       if (!amt || amt < 1) { alert('Please enter a valid donation amount.'); return; }
       alert('Thank you for your generous donation of $' + amt + '!\n\nPayment integration coming soon. JazakAllahu Khairan.');
     }
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const mmenu  = document.getElementById('mmenu');
+    const mmClose= document.getElementById('mmClose');
+    burger.addEventListener('click', () => { mmenu.classList.add('open'); document.body.style.overflow='hidden'; });
+    mmClose.addEventListener('click', () => { mmenu.classList.remove('open'); document.body.style.overflow=''; });
+    mmenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mmenu.classList.remove('open'); document.body.style.overflow=''; }));
 
     // Nav scroll state
     const nav = document.getElementById('nav');
